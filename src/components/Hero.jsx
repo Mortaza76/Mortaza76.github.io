@@ -1,5 +1,5 @@
 import React, { useCallback, useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Particles } from '@tsparticles/react';
 import { loadFull } from 'tsparticles';
 import gsap from 'gsap';

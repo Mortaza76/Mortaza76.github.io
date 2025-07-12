@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { 
-  FaBrain, 
   FaCode, 
   FaDatabase, 
   FaChartBar, 
