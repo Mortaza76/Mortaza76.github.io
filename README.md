@@ -82,7 +82,30 @@ website/
 - `npm run build` - Builds the app for production
 - `npm run eject` - Ejects from Create React App (one-way operation)
 
-## 🎯 Next Steps
+## � Deployment
+
+This project is configured for automatic deployment to GitHub Pages. The deployment process is handled by GitHub Actions.
+
+### GitHub Pages Deployment
+
+1. **Automatic Deployment**: The app is automatically deployed to GitHub Pages when you push to the `main` branch
+2. **Live URL**: [https://mortaza76.github.io](https://mortaza76.github.io)
+3. **Build Process**: The GitHub Actions workflow builds the React app and deploys it to the `gh-pages` branch
+
+### Manual Deployment
+
+If you need to deploy manually:
+
+```bash
+# Build the project
+npm run build
+
+# Deploy to GitHub Pages (if you have gh-pages installed)
+npm install -g gh-pages
+gh-pages -d build
+```
+
+## �🎯 Next Steps
 
 This is a basic setup that you can extend with:
 
