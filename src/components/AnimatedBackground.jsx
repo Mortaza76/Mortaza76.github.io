@@ -1,6 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import useDarkMode from '../hooks/useDarkMode';
 
+function isMobile() {
+  if (typeof navigator === 'undefined') return false;
+  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 // Vibrant, elegant color palettes
 const DAY_COLORS = [
   '#a855f7', // purple
@@ -41,6 +46,10 @@ const AnimatedBackground = () => {
   const canvasRef = useRef(null);
   const animationRef = useRef(null);
   const { isDark } = useDarkMode();
+  // Reduce particles and frame rate on mobile
+  const isMobileDevice = isMobile();
+  const PARTICLE_COUNT = isMobileDevice ? 4 : 14;
+  const FRAME_INTERVAL = isMobileDevice ? 1000 / 30 : 1000 / 60;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -49,8 +58,6 @@ const AnimatedBackground = () => {
     let height = window.innerHeight;
     canvas.width = width;
     canvas.height = height;
-
-    // Responsive resize
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
@@ -58,13 +65,11 @@ const AnimatedBackground = () => {
       canvas.height = height;
     };
     window.addEventListener('resize', handleResize);
-
-    // Particle system
     let palette = isDark ? NIGHT_COLORS : DAY_COLORS;
     let bgColor = isDark ? CANVAS_BG_NIGHT : CANVAS_BG_DAY;
-    let particles = Array.from({ length: NUM_PARTICLES }).map(() => {
+    let particles = Array.from({ length: PARTICLE_COUNT }).map(() => {
       const angle = Math.random() * Math.PI * 2;
-      const speed = lerp(2.2, 4.2, Math.random()); // much faster
+      const speed = lerp(2.2, 4.2, Math.random());
       return {
         x: Math.random() * width,
         y: Math.random() * height,
@@ -77,7 +82,6 @@ const AnimatedBackground = () => {
         squishVel: 0,
       };
     });
-
     function drawParticles() {
       ctx.clearRect(0, 0, width, height);
       ctx.save();
@@ -86,7 +90,6 @@ const AnimatedBackground = () => {
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
       for (const p of particles) {
-        // Clamp squish to avoid invalid ellipse
         p.squish = Math.max(0.4, Math.min(2.5, isNaN(p.squish) ? 1 : p.squish));
         const rx = Math.max(2, Math.abs(p.r * p.squish));
         const ry = Math.max(2, Math.abs(p.r / p.squish));
@@ -104,24 +107,19 @@ const AnimatedBackground = () => {
       }
       ctx.filter = 'none';
     }
-
     function updateParticles() {
-      // Move
       for (const p of particles) {
         p.x += p.vx;
         p.y += p.vy;
-        // Bounce off walls
         if (p.x - p.r < 0) { p.x = p.r; p.vx *= -1.15; p.squishVel = -0.25; }
         if (p.x + p.r > width) { p.x = width - p.r; p.vx *= -1.15; p.squishVel = -0.25; }
         if (p.y - p.r < 0) { p.y = p.r; p.vy *= -1.15; p.squishVel = 0.25; }
         if (p.y + p.r > height) { p.y = height - p.r; p.vy *= -1.15; p.squishVel = 0.25; }
         if (p.mergeCooldown > 0) p.mergeCooldown--;
-        // Squish relax
         p.squish += p.squishVel;
         p.squishVel *= 0.7;
         p.squish = lerp(p.squish, 1, 0.12);
       }
-      // Collisions & merging
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const a = particles[i];
@@ -130,9 +128,7 @@ const AnimatedBackground = () => {
           const dy = b.y - a.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < a.r + b.r) {
-            // Sometimes merge, sometimes bounce
             if (dist < (a.r + b.r) * MERGE_DISTANCE && a.mergeCooldown === 0 && b.mergeCooldown === 0 && Math.random() < MERGE_PROB) {
-              // Merge: absorb smaller into larger
               let big, small;
               if (a.r > b.r) { big = a; small = b; } else { big = b; small = a; }
               big.r = Math.min(MAX_RADIUS, Math.sqrt(big.r * big.r + small.r * small.r));
@@ -145,7 +141,6 @@ const AnimatedBackground = () => {
               small.color = randomColor(palette);
               small.mergeCooldown = 60;
             } else {
-              // Harder, more energetic bounce
               const nx = dx / dist;
               const ny = dy / dist;
               const p1 = a.vx * nx + a.vy * ny;
@@ -155,33 +150,32 @@ const AnimatedBackground = () => {
               a.vy += (p2 - p1) * ny * bounce;
               b.vx += (p1 - p2) * nx * bounce;
               b.vy += (p1 - p2) * ny * bounce;
-              // Squish effect
               a.squishVel -= 0.18;
               b.squishVel += 0.18;
             }
           }
         }
       }
-      // Smooth velocity
       for (const p of particles) {
         p.vx = lerp(p.vx, Math.max(-6, Math.min(6, p.vx)), 0.97);
         p.vy = lerp(p.vy, Math.max(-6, Math.min(6, p.vy)), 0.97);
       }
     }
-
-    function animate() {
-      updateParticles();
-      drawParticles();
+    let lastFrame = performance.now();
+    function animate(now) {
+      if (now - lastFrame >= FRAME_INTERVAL) {
+        updateParticles();
+        drawParticles();
+        lastFrame = now;
+      }
       animationRef.current = requestAnimationFrame(animate);
     }
-    animate();
-
+    animate(performance.now());
     return () => {
       window.removeEventListener('resize', handleResize);
       if (animationRef.current) cancelAnimationFrame(animationRef.current);
     };
-    // eslint-disable-next-line
-  }, [isDark]);
+  }, [isDark, isMobileDevice]);
 
   return (
     <canvas
