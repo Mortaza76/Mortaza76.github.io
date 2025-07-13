@@ -176,6 +176,8 @@ const TechStackCarousel = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/tech-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: 1, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />

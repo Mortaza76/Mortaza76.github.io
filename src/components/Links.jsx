@@ -155,6 +155,8 @@ const Links = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/white3-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: isDark ? 0 : 1, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />
@@ -164,6 +166,8 @@ const Links = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/dark3-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: isDark ? 1 : 0, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />

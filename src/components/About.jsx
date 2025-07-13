@@ -18,6 +18,8 @@ const About = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/white1-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: isDark ? 0 : 1, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />
@@ -27,6 +29,8 @@ const About = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/dark1-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: isDark ? 1 : 0, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />
@@ -100,6 +104,9 @@ const About = () => {
                 src="/graduation2.jpg"
                 alt="Ameer Mortaza Graduation"
                 loading="lazy"
+                decoding="async"
+                srcSet="/graduation2.jpg 384w, /graduation2.jpg 600w, /graduation2.jpg 1024w"
+                sizes="(max-width: 640px) 90vw, (max-width: 1024px) 50vw, 384px"
                 width="600"
                 height="384"
                 className="relative w-full h-96 object-cover rounded-2xl shadow-2xl"
