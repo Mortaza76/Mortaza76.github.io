@@ -1,29 +1,28 @@
 import React, { useEffect, useRef } from 'react';
 import useDarkMode from '../hooks/useDarkMode';
 
+function isMobile() {
+  if (typeof navigator === 'undefined') return false;
+  return /Mobi|Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
 const CursorFollower = () => {
+  if (isMobile()) return null;
   const { isDark } = useDarkMode();
   const trailRefs = useRef([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const animationIdRef = useRef(null);
 
   useEffect(() => {
-    // Show default cursor
     document.body.style.cursor = 'auto';
-
-    // Initial positions
     let x = window.innerWidth / 2;
     let y = window.innerHeight / 2;
     let trailXY = Array(7).fill([x, y]);
-
-    // Mouse move handler
     const handleMouseMove = (e) => {
       mouseRef.current.x = e.clientX;
       mouseRef.current.y = e.clientY;
     };
     document.addEventListener('mousemove', handleMouseMove);
-
-    // Animation loop
     function animate() {
       trailXY = trailXY.map(([tx, ty], i) => {
         const ease = 0.12 + i * 0.04;
@@ -42,7 +41,6 @@ const CursorFollower = () => {
       animationIdRef.current = requestAnimationFrame(animate);
     }
     animate();
-
     return () => {
       document.body.style.cursor = 'auto';
       document.removeEventListener('mousemove', handleMouseMove);

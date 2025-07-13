@@ -13,6 +13,7 @@ html {
   color: #222;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body {
@@ -21,6 +22,7 @@ body {
   color: #222;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1), color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark html, .dark body {
@@ -44,6 +46,8 @@ body {
   border-radius: 24px;
   border: 1px solid rgba(200, 200, 200, 0.18);
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.04), 0 1.5px 4px 0 rgba(0,0,0,0.03);
+  transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dark .glass {
@@ -59,12 +63,13 @@ button, .btn, .glass-btn {
   color: #222;
   border: 1px solid #e5e5ea;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.04);
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-color 0.2s, transform 0.2s, opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 button:hover, .btn:hover, .glass-btn:hover {
   background: #f2f2f7;
   color: #111;
   box-shadow: 0 4px 16px 0 rgba(0,0,0,0.06);
+  opacity: 0.85;
 }
 .dark button, .dark .btn, .dark .glass-btn {
   background: #23232a;
@@ -82,186 +87,27 @@ button:hover, .btn:hover, .glass-btn:hover {
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.04), 0 1.5px 4px 0 rgba(0,0,0,0.03);
   background: #fff;
   border: 1px solid #e5e5ea;
+  transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .dark .card, .dark .glass {
   background: #23232a;
   border: 1px solid #33343a;
 }
-
-/* iOS-inspired section spacing */
-.section-padding {
-  padding-top: 4rem;
-  padding-bottom: 4rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+.card:hover, .glass:hover {
+  transform: scale(1.025);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.10), 0 2px 8px 0 rgba(0,0,0,0.04);
 }
 
-/* iOS-inspired headings */
-.heading-xl {
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  color: #111;
+/* Icon click animation utility */
+@keyframes icon-bounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.18); }
+  60% { transform: scale(0.92); }
+  100% { transform: scale(1); }
 }
-
-.heading-lg {
-  font-weight: 600;
-  color: #222;
-}
-
-.heading-md {
-  font-weight: 500;
-  color: #333;
-}
-
-.body-lg, .body-md {
-  font-family: inherit;
-  color: #222;
-}
-
-.dark .heading-xl, .dark .heading-lg, .dark .heading-md, .dark .body-lg, .dark .body-md {
-  color: #f8f8fa;
-}
-
-/* iOS-inspired subtle divider */
-.divider {
-  border-bottom: 1px solid #e5e5ea;
-  margin: 2rem 0;
-}
-.dark .divider {
-  border-bottom: 1px solid #33343a;
-}
-
-/* Remove gradients for a more iOS look */
-.gradient-text, .bg-gradient-to-r, .bg-gradient-to-b, .bg-gradient-to-t, .bg-gradient-to-l {
-  background: none !important;
-  -webkit-background-clip: initial !important;
-  -webkit-text-fill-color: initial !important;
-  background-clip: initial !important;
-  color: inherit !important;
-}
-
-/* iOS-inspired scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.dark ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-::-webkit-scrollbar-thumb {
-  background: #e5e5ea;
-  border-radius: 4px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: #33343a;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.4);
-}
-
-/* iOS-inspired focus ring */
-.focus-ring {
-  outline: 2px solid #007aff;
-  outline-offset: 2px;
-}
-
-/* iOS-inspired transitions */
-* {
-  /* Apple-like ease-out for all transitions */
-  transition: background-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Theme transition class for specific elements */
-.theme-transition {
-  transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Smooth background transitions */
-html {
-  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-body {
-  transition: background-color 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Buttons and cards (hover/click) */
-button, .btn, .glass-btn, .card, .glass {
-  transition: background 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* Enhanced focus styles */
-.focus-ring {
-  @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900;
-}
-
-/* Section spacing utilities */
-.section-margin {
-  @apply my-16;
-}
-
-/* Container utilities */
-.container-max {
-  @apply max-w-7xl mx-auto;
-}
-
-/* Typography utilities */
-.heading-xl {
-  @apply text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight;
-}
-
-.heading-lg {
-  @apply text-3xl md:text-4xl font-bold tracking-tight;
-}
-
-.heading-md {
-  @apply text-2xl md:text-3xl font-semibold;
-}
-
-.body-lg {
-  @apply text-lg md:text-xl leading-relaxed;
-}
-
-.body-md {
-  @apply text-base md:text-lg leading-relaxed;
-}
-
-/* Animated Gradient Background */
-@keyframes gradient-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-.animate-gradient {
-  animation: gradient-shift 15s ease infinite;
-  background-size: 400% 400%;
+.icon-animate:active {
+  animation: icon-bounce 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Floating Animation */
@@ -278,70 +124,6 @@ button, .btn, .glass-btn, .card, .glass {
   animation: float 6s ease-in-out infinite;
 }
 
-/* New floating animations for background orbs */
-@keyframes float-slow {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) rotate(0deg);
-  }
-  33% {
-    transform: translateY(-30px) translateX(20px) rotate(120deg);
-  }
-  66% {
-    transform: translateY(-15px) translateX(-15px) rotate(240deg);
-  }
-}
-
-.animate-float-slow {
-  animation: float-slow 20s ease-in-out infinite;
-}
-
-@keyframes float-medium {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-25px) translateX(15px) rotate(180deg);
-  }
-}
-
-.animate-float-medium {
-  animation: float-medium 15s ease-in-out infinite;
-}
-
-@keyframes float-fast {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) rotate(0deg);
-  }
-  25% {
-    transform: translateY(-20px) translateX(10px) rotate(90deg);
-  }
-  50% {
-    transform: translateY(-10px) translateX(-10px) rotate(180deg);
-  }
-  75% {
-    transform: translateY(-15px) translateX(5px) rotate(270deg);
-  }
-}
-
-.animate-float-fast {
-  animation: float-fast 10s ease-in-out infinite;
-}
-
-/* Grid patterns for background */
-.bg-grid-white {
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
-.bg-grid-gray {
-  background-image: 
-    linear-gradient(rgba(107, 114, 128, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(107, 114, 128, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-}
-
 /* Pulse Glow */
 @keyframes pulse-glow {
   0%, 100% {
@@ -354,94 +136,4 @@ button, .btn, .glass-btn, .card, .glass {
 
 .animate-pulse-glow {
   animation: pulse-glow 3s ease-in-out infinite;
-}
-
-/* Morphing Background */
-@keyframes morph {
-  0% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-  50% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-  }
-  100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-}
-
-.animate-morph {
-  animation: morph 8s ease-in-out infinite;
-}
-
-/* Shimmer Effect */
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
-}
-
-/* Dark mode specific animations */
-.dark .animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-}
-
-/* Theme toggle specific styles */
-.theme-toggle-container {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.theme-toggle-container:hover {
-  transform: scale(1.05);
-}
-
-/* Prevent flash of unstyled content during theme load */
-.theme-loading {
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.theme-loaded {
-  opacity: 1;
-}
-
-/* Microinteractions */
-button, .btn, .glass-btn {
-  transition: background 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              border-color 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-button:hover, .btn:hover, .glass-btn:hover {
-  opacity: 0.85;
-}
-
-.card, .glass {
-  transition: box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.card:hover, .glass:hover {
-  transform: scale(1.025);
-  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.10), 0 2px 8px 0 rgba(0,0,0,0.04);
-}
-
-/* Icon click animation utility */
-@keyframes icon-bounce {
-  0% { transform: scale(1); }
-  30% { transform: scale(1.18); }
-  60% { transform: scale(0.92); }
-  100% { transform: scale(1); }
-}
-.icon-animate:active {
-  animation: icon-bounce 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }

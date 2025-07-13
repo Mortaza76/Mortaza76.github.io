@@ -135,6 +135,8 @@ const Hero = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/white-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: isDark ? 0 : 1, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />
@@ -144,6 +146,8 @@ const Hero = () => {
           muted
           loop
           playsInline
+          preload="none"
+          poster="/dark-poster.jpg"
           className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
           style={{ opacity: isDark ? 1 : 0, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
         />
@@ -284,6 +288,9 @@ const Hero = () => {
             src="/graduation1.jpg"
             alt="Profile"
             loading="lazy"
+            decoding="async"
+            srcSet="/graduation1.jpg 320w, /graduation1.jpg 640w, /graduation1.jpg 1024w"
+            sizes="(max-width: 640px) 80vw, (max-width: 1024px) 40vw, 320px"
             width="320"
             height="320"
             className="w-40 h-40 md:w-64 md:h-64 rounded-full border-4 border-white/20 dark:border-gray-600/20 shadow-2xl object-cover animate-float"
