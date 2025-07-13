@@ -48,8 +48,8 @@ const AnimatedBackground = () => {
   const { isDark } = useDarkMode();
   // Reduce particles and frame rate on mobile
   const isMobileDevice = isMobile();
-  const PARTICLE_COUNT = isMobileDevice ? 4 : 14;
-  const FRAME_INTERVAL = isMobileDevice ? 1000 / 30 : 1000 / 60;
+  const PARTICLE_COUNT = isMobileDevice ? 3 : 14;
+  const FRAME_INTERVAL = isMobileDevice ? 1000 / 24 : 1000 / 60;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -85,7 +85,7 @@ const AnimatedBackground = () => {
     function drawParticles() {
       ctx.clearRect(0, 0, width, height);
       ctx.save();
-      ctx.globalAlpha = 1;
+      ctx.globalAlpha = isMobileDevice ? 0.7 : (isDark ? 0.93 : 0.82);
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, width, height);
       ctx.restore();
@@ -98,10 +98,10 @@ const AnimatedBackground = () => {
         ctx.ellipse(p.x, p.y, rx, ry, 0, 0, Math.PI * 2);
         ctx.closePath();
         ctx.shadowColor = p.color;
-        ctx.shadowBlur = isDark ? 40 : 22;
-        ctx.globalAlpha = isDark ? 0.93 : 0.82;
+        ctx.shadowBlur = isMobileDevice ? 8 : (isDark ? 40 : 22);
+        ctx.globalAlpha = isMobileDevice ? 0.7 : (isDark ? 0.93 : 0.82);
         ctx.fillStyle = p.color;
-        ctx.filter = `blur(${isDark ? 2.5 : 1.2}px)`;
+        ctx.filter = `blur(${isMobileDevice ? 0.5 : (isDark ? 2.5 : 1.2)}px)`;
         ctx.fill();
         ctx.restore();
       }
@@ -120,38 +120,40 @@ const AnimatedBackground = () => {
         p.squishVel *= 0.7;
         p.squish = lerp(p.squish, 1, 0.12);
       }
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const a = particles[i];
-          const b = particles[j];
-          const dx = b.x - a.x;
-          const dy = b.y - a.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < a.r + b.r) {
-            if (dist < (a.r + b.r) * MERGE_DISTANCE && a.mergeCooldown === 0 && b.mergeCooldown === 0 && Math.random() < MERGE_PROB) {
-              let big, small;
-              if (a.r > b.r) { big = a; small = b; } else { big = b; small = a; }
-              big.r = Math.min(MAX_RADIUS, Math.sqrt(big.r * big.r + small.r * small.r));
-              big.vx = lerp(big.vx, small.vx, 0.5);
-              big.vy = lerp(big.vy, small.vy, 0.5);
-              big.mergeCooldown = 60;
-              small.x = Math.random() * width;
-              small.y = Math.random() * height;
-              small.r = lerp(MIN_RADIUS, MAX_RADIUS, Math.random());
-              small.color = randomColor(palette);
-              small.mergeCooldown = 60;
-            } else {
-              const nx = dx / dist;
-              const ny = dy / dist;
-              const p1 = a.vx * nx + a.vy * ny;
-              const p2 = b.vx * nx + b.vy * ny;
-              const bounce = 1.25;
-              a.vx += (p2 - p1) * nx * bounce;
-              a.vy += (p2 - p1) * ny * bounce;
-              b.vx += (p1 - p2) * nx * bounce;
-              b.vy += (p1 - p2) * ny * bounce;
-              a.squishVel -= 0.18;
-              b.squishVel += 0.18;
+      if (!isMobileDevice) {
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const a = particles[i];
+            const b = particles[j];
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < a.r + b.r) {
+              if (dist < (a.r + b.r) * MERGE_DISTANCE && a.mergeCooldown === 0 && b.mergeCooldown === 0 && Math.random() < MERGE_PROB) {
+                let big, small;
+                if (a.r > b.r) { big = a; small = b; } else { big = b; small = a; }
+                big.r = Math.min(MAX_RADIUS, Math.sqrt(big.r * big.r + small.r * small.r));
+                big.vx = lerp(big.vx, small.vx, 0.5);
+                big.vy = lerp(big.vy, small.vy, 0.5);
+                big.mergeCooldown = 60;
+                small.x = Math.random() * width;
+                small.y = Math.random() * height;
+                small.r = lerp(MIN_RADIUS, MAX_RADIUS, Math.random());
+                small.color = randomColor(palette);
+                small.mergeCooldown = 60;
+              } else {
+                const nx = dx / dist;
+                const ny = dy / dist;
+                const p1 = a.vx * nx + a.vy * ny;
+                const p2 = b.vx * nx + b.vy * ny;
+                const bounce = 1.25;
+                a.vx += (p2 - p1) * nx * bounce;
+                a.vy += (p2 - p1) * ny * bounce;
+                b.vx += (p1 - p2) * nx * bounce;
+                b.vy += (p1 - p2) * ny * bounce;
+                a.squishVel -= 0.18;
+                b.squishVel += 0.18;
+              }
             }
           }
         }
