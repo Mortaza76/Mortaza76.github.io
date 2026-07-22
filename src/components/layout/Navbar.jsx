@@ -98,7 +98,7 @@ function NavHudLink({ link, active }) {
               transition={{ type: 'spring', stiffness: 400, damping: 22 }}
               className="pointer-events-none absolute -top-3 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded border border-cyan/35 bg-void/90 px-1.5 py-0.5 font-mono text-[8px] uppercase tracking-[0.2em] text-cyan shadow-[0_0_12px_rgba(0,245,255,0.25)]"
             >
-              //{String(link.id).slice(0, 3)}
+              {`//${String(link.id).slice(0, 3)}`}
             </motion.span>
           )}
         </AnimatePresence>
