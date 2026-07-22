@@ -168,28 +168,6 @@ const TechStackCarousel = () => {
 
   return (
     <section className="py-20 bg-white dark:bg-gray-900 text-gray-900 dark:text-white relative overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-        <video
-          src="/tech.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-          style={{ opacity: 1, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        />
-        {/* Overlay for text clarity */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(120deg, rgba(255,255,255,0.70) 0%, rgba(30,30,34,0.70) 100%)',
-            zIndex: 1,
-          }}
-        />
-      </div>
-      
-      {/* Parallax Background Layer */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{

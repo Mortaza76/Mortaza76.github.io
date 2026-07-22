@@ -7,41 +7,7 @@ import {
   FaWhatsapp
 } from 'react-icons/fa';
 import { sendForm } from '@emailjs/browser';
-import useDarkMode from '../hooks/useDarkMode';
-
-const SpotifyPlayer = () => {
-  const [visible, setVisible] = useState(true);
-  return visible ? (
-    <motion.div
-      className="fixed bottom-6 right-6 z-50 bg-black/80 rounded-2xl shadow-2xl border border-white/10 backdrop-blur-md p-2 flex flex-col items-end"
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 40 }}
-      transition={{ duration: 0.5 }}
-      style={{ width: 340, maxWidth: '90vw' }}
-    >
-      <button
-        className="btn mb-1 mr-1 text-white/60 hover:text-white text-xs px-2 py-0.5 rounded bg-white/10"
-        onClick={() => setVisible(false)}
-        aria-label="Close Spotify Player"
-      >✕</button>
-      <iframe
-        title="Spotify Playlist"
-        src="https://open.spotify.com/embed/playlist/37i9dQZF1DXcBWIGoYBM5M?utm_source=generator"
-        width="320"
-        height="80"
-        frameBorder="0"
-        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-        loading="lazy"
-        className="rounded-xl"
-        style={{ border: 0 }}
-      />
-    </motion.div>
-  ) : null;
-};
-
 const Links = () => {
-  const { isDark } = useDarkMode();
   const formRef = useRef();
   const [formData, setFormData] = useState({
     name: '',
@@ -147,38 +113,6 @@ const Links = () => {
 
   return (
     <section className="py-20 relative overflow-hidden select-none bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
-      {/* Video Backgrounds with Smooth Transition */}
-      <div className="absolute inset-0 w-full h-full z-0 pointer-events-none">
-        <video
-          src="/white3.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-          style={{ opacity: isDark ? 0 : 1, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        />
-        <video
-          src="/dark3.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-700"
-          style={{ opacity: isDark ? 1 : 0, transition: 'opacity 0.7s cubic-bezier(0.22,1,0.36,1)' }}
-        />
-        {/* Overlay for text clarity */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background: isDark
-              ? 'linear-gradient(120deg, rgba(0,0,0,0.60) 0%, rgba(30,30,34,0.60) 100%)'
-              : 'linear-gradient(120deg, rgba(255,255,255,0.60) 0%, rgba(240,240,240,0.60) 100%)',
-            zIndex: 1,
-          }}
-        />
-      </div>
-      {/* Parallax Background Layer */}
       <motion.div
         className="absolute inset-0 z-0 pointer-events-none"
         style={{
@@ -401,7 +335,6 @@ const Links = () => {
           </p>
         </motion.div>
       </div>
-      <SpotifyPlayer />
     </section>
   );
 };

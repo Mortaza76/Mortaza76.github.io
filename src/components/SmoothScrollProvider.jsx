@@ -1,38 +1,42 @@
 import React, { useEffect, useRef, createContext, useContext } from 'react';
 import Lenis from 'lenis';
+import 'lenis/dist/lenis.css';
 
 export const LenisContext = createContext(null);
 
+/**
+ * Tuned for a looser, more natural wheel feel:
+ * - lerp (not long duration) so scroll stays responsive
+ * - slightly higher wheelMultiplier so each notch travels more
+ * - syncTouch off so phones keep native momentum
+ */
 const SmoothScrollProvider = ({ children }) => {
   const lenisRef = useRef(null);
 
   useEffect(() => {
-    // Initialize Lenis smooth scrolling
-    lenisRef.current = new Lenis({
-      duration: 1.5, // More inertia for Apple-like feel
-      // Cubic ease-out for buttery inertia
-      easing: (t) => 1 - Math.pow(1 - t, 3),
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return undefined;
+
+    const lenis = new Lenis({
+      // Lower lerp = creamier / more inertial smooth scroll
+      lerp: 0.055,
+      smoothWheel: true,
+      wheelMultiplier: 1.1,
+      touchMultiplier: 1.5,
+      // Keep native touch scrolling — syncTouch feels rubbery on phones
+      syncTouch: false,
       orientation: 'vertical',
       gestureOrientation: 'vertical',
-      smoothWheel: true,
-      wheelMultiplier: 1,
-      smoothTouch: true, // Enable for iOS-like inertia
-      touchMultiplier: 2,
+      autoRaf: true,
+      anchors: false,
       infinite: false,
     });
 
-    // RAF loop for Lenis
-    function raf(time) {
-      lenisRef.current?.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+    lenisRef.current = lenis;
 
-    // Cleanup
     return () => {
-      if (lenisRef.current) {
-        lenisRef.current.destroy();
-      }
+      lenis.destroy();
+      lenisRef.current = null;
     };
   }, []);
 
@@ -45,4 +49,4 @@ const SmoothScrollProvider = ({ children }) => {
 
 export const useLenis = () => useContext(LenisContext);
 
-export default SmoothScrollProvider; 
+export default SmoothScrollProvider;
